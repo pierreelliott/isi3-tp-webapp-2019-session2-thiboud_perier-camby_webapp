@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Vue.js components</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="css/bulma.css">
+  <script src="js/vendors/vue.js"></script>
+</head>
+
+<body>
+
+<section class="container" id="application">
+  <div>
+    <app-title></app-title>
+    <sub-title></sub-title>
+    <add-message></add-message>
+    <messages-list></messages-list>
+  </div>
+</section>
+
+<script src="js/app-title.js"></script>
+<script src="js/sub-title.js"></script>
+<script src="js/add-message.js"></script>
+<script src="js/messages-list.js"></script>
+
+<script>
+  new Vue({
+    el:"#application"
+  })
+</script>
+
+
+
+</body>
+</html>
