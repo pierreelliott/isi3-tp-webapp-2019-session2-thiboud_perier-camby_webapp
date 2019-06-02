@@ -90,6 +90,30 @@ fetch(`/hello-world`, {
 app.get("/hello-world") { ctx -> ctx.json(Message("Hello World")) }
 ```
 
+
+> **Remarques**: 
+
+Pour ajouter un message (et donc appeler l'API de type `POST`):
+
+```javascript
+fetch(`/messages`, {
+  method: 'POST',
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+  },
+  body: "text=Hello!!!"
+})
+.then(response => response.json())
+.then(data => {
+	console.log(data)
+})
+.catch(error => {
+	console.log(error)
+})
+
+```
+
+
 ![chrome_2](chrome_2.png)
 
 ## Web Appalication (Front)
@@ -136,3 +160,58 @@ Donnez la possibilité de supprimer les ingrédients du Kebab
 
 ## Exercice 4:
 
+Si il reste du temps, mettre en place un système d'authentification (juste pour un seul user==administrator) à base de JWT
+
+- côté serveur: 
+  - génération du token
+  - vérification des appels de l'api
+- côté navigateur
+  - créer le formulaire de login et récupérer le token
+  - enregistrer le token dans le local storage
+  - utiliser le token avec les requêtes http
+
+> Ressources:
+> - https://javalin.io/2018/09/11/javalin-jwt-example.html
+
+
+
+> Code JavaScript pour s'authentifier et demander un token:
+```javascript
+fetch(`/admin/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: name, pwd: pwd
+    }), // body data type must match "Content-Type" header
+})
+.then(response => {
+  return response.json()
+})
+.then(data =>  {
+  if(!data.token) {
+    window.localStorage.setItem('my_credentials', null)
+  } else {
+    window.localStorage.setItem('my_credentials', JSON.stringify({token:data.token, user:name}))
+  }
+})
+.catch(error => {})
+```
+
+> Code JavaScript pour envoyer un token avec une requête:
+```javascript
+let credentials = JSON.parse(window.localStorage.getItem('my_credentials'))
+
+let token = (credentials==null || credentials==undefined)
+  ? null
+  : credentials.token
+
+return fetch(`/something`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'token': token
+  }
+})
+```
