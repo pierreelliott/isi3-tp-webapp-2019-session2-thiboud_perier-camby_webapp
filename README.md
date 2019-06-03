@@ -25,6 +25,13 @@
 
 ![archi_3](archi_3.png)
 
+## Ressources 
+
+- Différences entre MVC <> MVVM: [https://medium.com/mobidroid/difference-between-mvc-and-mvvm-456ec67181f6](https://medium.com/mobidroid/difference-between-mvc-and-mvvm-456ec67181f6)
+- MVVM: [https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel)
+
+
+
 ## Lancer l'application du projet
 
 Le framework utilisé est Javalin (utilisable en Java et Kotlin): [https://javalin.io/](https://javalin.io/)
