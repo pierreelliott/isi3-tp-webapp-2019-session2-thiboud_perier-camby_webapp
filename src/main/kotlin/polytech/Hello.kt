@@ -20,6 +20,12 @@ fun main(args: Array<String>) {
         Ingredient("Salad")
     )
 
+    val adminUsername: String = "admin"
+    val adminPassword: String = "secret"
+    data class JWT(val token: String, val message: String)
+    data class Credential(val username: String, val password: String)
+    val ERROR = object { val error = "Not authorized!"}
+
     val app = Javalin.create()
 
     app.enableStaticFiles("./public", Location.EXTERNAL).start(7000)
@@ -38,18 +44,51 @@ fun main(args: Array<String>) {
     }
 
     // =============== Kebab ==================
+
+    fun createToken(username: String, password: String): String {
+        return Credential(username, password).hashCode().toString() + "KBB"
+    }
+
+    fun checkToken(token: String): Boolean {
+        return token == createToken(adminUsername, adminPassword)
+    }
+
     app.get("/kebab") { ctx -> ctx.json(kebabIngredients) }
 
     app.post("/kebab/add-ingredient") { ctx ->
-        val newIngredient = Ingredient(ctx.formParam("label").toString())
-        kebabIngredients.add(newIngredient)
-        ctx.json(newIngredient).status(201)
+        val token = ctx.formParam("token").toString()
+        if (checkToken(token)) {
+            val newIngredient = Ingredient(ctx.formParam("label").toString())
+            kebabIngredients.add(newIngredient)
+            ctx.json(newIngredient).status(201)
+        } else {
+            ctx.json(ERROR).status(403)
+        }
     }
 
     app.post("/kebab/delete-ingredient") { ctx ->
-        val ingredientToDelete = Ingredient(ctx.formParam("label").toString())
-        kebabIngredients.remove(ingredientToDelete)
-        ctx.json(kebabIngredients).status(201)
+        val token = ctx.formParam("token").toString()
+        if (checkToken(token)) {
+            val ingredientToDelete = Ingredient(ctx.formParam("label").toString())
+            kebabIngredients.remove(ingredientToDelete)
+            ctx.json(kebabIngredients).status(201)
+        } else {
+            ctx.json(ERROR).status(403)
+        }
+    }
+
+    app.post("/admin/login") { ctx ->
+        val username = ctx.formParam("username").toString()
+        val password = ctx.formParam("password").toString()
+
+        var token: JWT? = null
+        if(adminUsername == username && adminPassword == password) {
+            token = JWT(createToken(username, password), "😃 welcome!")
+            ctx.json(token).status(201)
+        } else {
+            token = JWT("", "😡 go away!")
+            ctx.json(token).status(403)
+        }
     }
 
 }
