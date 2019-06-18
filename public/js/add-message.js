@@ -2,9 +2,9 @@ Vue.component(`add-message`, {
     template: `
     <div class="field is-grouped">
       <div class="control">
-        <input v-model="message" class="input" type="text" placeholder="type message">
+        <input v-model="message" class="input" type="text" placeholder="Type a message">
         
-        <button v-on:click="addMessage" class="button is-link">add message</button>
+        <button v-on:click="addMessage" class="button is-link">Add message</button>
 
       </div>
     </div>    

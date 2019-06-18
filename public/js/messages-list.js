@@ -15,19 +15,42 @@ Vue.component(`messages-list`, {
     },
     methods: {
         populateTheList: function() {
-            this.messages = [
-                "one",
-                "two",
-                "three"
-            ]
+            fetch(`/messages`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(message => this.messages.push(message.text));
+            })
+            .catch(error => {
+                console.error(error);
+            });
         }
     },
     mounted() {
-        this.populateTheList()
+        this.populateTheList();
 
         this.$root.$on("add-message", (message)=> {
-            this.messages.push(message)
-        })
+            fetch(`/messages`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: "text=" + message
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                this.messages.push(message);
+                alert("Message \"" + message + "\" enregistré !");
+            })
+            .catch(error => {
+                console.error(error);
+            })
+        });
 
     }
 })
