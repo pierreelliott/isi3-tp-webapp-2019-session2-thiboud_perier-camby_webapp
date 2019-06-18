@@ -46,4 +46,10 @@ fun main(args: Array<String>) {
         ctx.json(newIngredient).status(201)
     }
 
+    app.post("/kebab/delete-ingredient") { ctx ->
+        val ingredientToDelete = Ingredient(ctx.formParam("label").toString())
+        kebabIngredients.remove(ingredientToDelete)
+        ctx.json(kebabIngredients).status(201)
+    }
+
 }
