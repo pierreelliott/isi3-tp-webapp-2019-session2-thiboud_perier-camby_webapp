@@ -49,7 +49,7 @@ Vue.component(`kebab-ingredients-list`, {
         },
         deleteIngredient: function (ingredient) {
             fetch(`/kebab/delete-ingredient`, {
-                method: 'POST',
+                method: 'DELETE',
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },

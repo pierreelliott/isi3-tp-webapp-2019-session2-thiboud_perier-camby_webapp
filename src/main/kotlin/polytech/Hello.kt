@@ -66,7 +66,7 @@ fun main(args: Array<String>) {
         }
     }
 
-    app.post("/kebab/delete-ingredient") { ctx ->
+    app.delete("/kebab/delete-ingredient") { ctx ->
         val token = ctx.formParam("token").toString()
         if (checkToken(token)) {
             val ingredientToDelete = Ingredient(ctx.formParam("label").toString())
