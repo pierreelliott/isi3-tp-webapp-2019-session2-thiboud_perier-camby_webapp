@@ -52,9 +52,9 @@ Vue.component(`kebab-ingredients-list`, {
                 method: 'DELETE',
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
+                    Authorization: 'Bearer ' + this.getToken()
                 },
                 body: "label=" + ingredient
-                    + "&token=" + this.getToken()
             })
             .then(response => {
                 if(!response.ok) {
@@ -89,18 +89,18 @@ Vue.component(`kebab-ingredients-list`, {
             fetch(`/admin/login`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: "username=" + name
                         + "&password=" + pwd
             })
             .then(response => response.json())
             .then(data =>  {
-                if(!data.token) {
+                if(!data.jwt) {
                     window.localStorage.setItem('my_credentials', null);
                     this.connected = false;
                 } else {
-                    window.localStorage.setItem('my_credentials', JSON.stringify({token: data.token, username: name}));
+                    window.localStorage.setItem('my_credentials', JSON.stringify({token: data.jwt, username: name}));
                     this.connected = true;
                 }
             })
@@ -119,9 +119,9 @@ Vue.component(`kebab-ingredients-list`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
+                    Authorization: 'Bearer ' + this.getToken()
                 },
                 body: "label=" + ingredient
-                        + "&token=" + this.getToken()
             })
             .then(response => {
                 if(!response.ok) {
